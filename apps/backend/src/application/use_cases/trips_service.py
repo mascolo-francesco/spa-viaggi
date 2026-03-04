@@ -1,3 +1,5 @@
+from datetime import UTC, date, datetime, time
+
 from bson import ObjectId
 from fastapi import HTTPException, status
 
@@ -24,6 +26,16 @@ class TripsService:
                 detail={"code": "INVALID_DATE_RANGE", "message": "end_date deve essere >= start_date"},
             )
 
+    @staticmethod
+    def _to_mongo_datetime(value):
+        if value is None:
+            return None
+        if isinstance(value, datetime):
+            return value
+        if isinstance(value, date):
+            return datetime.combine(value, time.min, tzinfo=UTC)
+        return value
+
     async def list_trips(self, filters: dict, page: int, limit: int, sort: str) -> dict:
         docs, total = await self.trips_repo.list_trips(filters, page, limit, sort)
         return {
@@ -44,6 +56,8 @@ class TripsService:
         self._validate_dates(data.get("start_date"), data.get("end_date"))
         participants = [to_object_id(x, "participant_id") for x in data.pop("participants", [])]
         location = self._build_location(data.pop("location", None))
+        data["start_date"] = self._to_mongo_datetime(data.get("start_date"))
+        data["end_date"] = self._to_mongo_datetime(data.get("end_date"))
 
         payload = {
             **data,
@@ -66,6 +80,10 @@ class TripsService:
         payload = data.copy()
         if "location" in payload:
             payload["location"] = self._build_location(payload.pop("location"))
+        if "start_date" in payload:
+            payload["start_date"] = self._to_mongo_datetime(payload.get("start_date"))
+        if "end_date" in payload:
+            payload["end_date"] = self._to_mongo_datetime(payload.get("end_date"))
 
         updated = await self.trips_repo.update(to_object_id(trip_id, "trip_id"), payload)
         if not updated:

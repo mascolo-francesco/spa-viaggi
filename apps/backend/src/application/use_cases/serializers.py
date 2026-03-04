@@ -1,4 +1,12 @@
+from datetime import datetime
+
 from bson import ObjectId
+
+
+def _as_date(value):
+    if isinstance(value, datetime):
+        return value.date()
+    return value
 
 
 def serialize_user(doc: dict) -> dict:
@@ -14,8 +22,8 @@ def serialize_trip_summary(doc: dict) -> dict:
         "id": str(doc["_id"]),
         "title": doc["title"],
         "destination": doc.get("destination"),
-        "start_date": doc.get("start_date"),
-        "end_date": doc.get("end_date"),
+        "start_date": _as_date(doc.get("start_date")),
+        "end_date": _as_date(doc.get("end_date")),
         "status": doc.get("status", "planned"),
         "participants_count": len(doc.get("participants", [])),
         "created_at": doc.get("created_at"),
@@ -36,8 +44,8 @@ def serialize_trip_detail(doc: dict) -> dict:
         "title": doc["title"],
         "destination": doc.get("destination"),
         "description": doc.get("description"),
-        "start_date": doc.get("start_date"),
-        "end_date": doc.get("end_date"),
+        "start_date": _as_date(doc.get("start_date")),
+        "end_date": _as_date(doc.get("end_date")),
         "status": doc.get("status", "planned"),
         "location": location_out,
         "participants": participants,

@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import UTC, date, datetime, time
 
 from fastapi import APIRouter, Depends, Query, status
 
@@ -17,6 +17,18 @@ from src.core.security import get_current_user_id
 router = APIRouter()
 
 
+def _from_date_start(value: date | None) -> datetime | None:
+    if value is None:
+        return None
+    return datetime.combine(value, time.min, tzinfo=UTC)
+
+
+def _to_date_end(value: date | None) -> datetime | None:
+    if value is None:
+        return None
+    return datetime.combine(value, time.max, tzinfo=UTC)
+
+
 @router.get("/map/markers", response_model=list[TripMapMarker])
 async def map_markers(
     status_filter: str | None = Query(default=None, alias="status"),
@@ -31,9 +43,9 @@ async def map_markers(
     if from_date or to_date:
         date_filter = {}
         if from_date:
-            date_filter["$gte"] = from_date
+            date_filter["$gte"] = _from_date_start(from_date)
         if to_date:
-            date_filter["$lte"] = to_date
+            date_filter["$lte"] = _to_date_end(to_date)
         filters["start_date"] = date_filter
     return await service.map_markers(filters)
 
@@ -61,9 +73,9 @@ async def list_trips(
     if from_date or to_date:
         date_filter = {}
         if from_date:
-            date_filter["$gte"] = from_date
+            date_filter["$gte"] = _from_date_start(from_date)
         if to_date:
-            date_filter["$lte"] = to_date
+            date_filter["$lte"] = _to_date_end(to_date)
         filters["start_date"] = date_filter
 
     return await service.list_trips(filters, page, limit, sort)

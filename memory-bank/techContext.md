@@ -3,12 +3,12 @@
 ## Stack target
 - Backend framework: `FastAPI` (Python 3.12+).
 - ASGI server: `uvicorn` (eventuale `gunicorn` in produzione).
-- DB: `MongoDB` (replica set raccomandato).
+- DB target: `MongoDB Atlas` (cloud, replica set managed).
 - Driver Mongo: `PyMongo` con `AsyncMongoClient` (API async ufficiale).
 - Validazione/config: `pydantic v2` + `pydantic-settings`.
-- Password hashing: `pwdlib` o `passlib[bcrypt]`.
+- Password hashing: `bcrypt` nativo.
 - PDF: `reportlab` (render server-side).
-- Queue/job: `Redis` + `RQ` (o `Dramatiq`, da fissare in implementazione).
+- Queue/job: DB-backed queue su collection `export_jobs` + worker polling.
 - Test: `pytest`, `pytest-asyncio`, `httpx`, `mongomock`/DB test dedicato.
 
 ## Best practice MongoDB (retrieval Context7, 2026-03-04)
@@ -29,3 +29,4 @@ Scelta primaria: `PyMongo AsyncMongoClient` (driver ufficiale unificato).
 - Nessuna registrazione pubblica utenti.
 - Login semplice (no IAM avanzato obbligatorio).
 - Dataset seed iniziale: almeno 3 utenti, almeno 10 viaggi.
+- Runtime configurato su Atlas via `MONGODB_URI=mongodb+srv://...`.

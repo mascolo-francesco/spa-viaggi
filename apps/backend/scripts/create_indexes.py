@@ -19,7 +19,7 @@ async def main() -> None:
     await apply_validators(db)
     await create_indexes(db)
     print("Validator e indici creati/aggiornati")
-    close_client()
+    await close_client()
 
 
 if __name__ == "__main__":

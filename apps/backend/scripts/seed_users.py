@@ -24,8 +24,7 @@ async def main() -> None:
     repo = UsersRepository(db)
     inserted = await repo.seed_if_empty(data)
     print(f"Utenti inseriti: {inserted}")
-
-    close_client()
+    await close_client()
 
 
 if __name__ == "__main__":

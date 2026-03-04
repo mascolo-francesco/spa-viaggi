@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     logger.info("Application startup completed")
     yield
 
-    close_client()
+    await close_client()
     logger.info("Application shutdown completed")
 
 

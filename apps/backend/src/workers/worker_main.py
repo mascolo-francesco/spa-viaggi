@@ -30,7 +30,7 @@ async def run_worker() -> None:
             logger.info("Processing export job", extra={"job_id": str(job["_id"])})
             await process_export_job(db, job, settings.exports_path)
     finally:
-        close_client()
+        await close_client()
 
 
 if __name__ == "__main__":

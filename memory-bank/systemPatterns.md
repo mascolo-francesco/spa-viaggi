@@ -29,7 +29,7 @@ Modular Monolith backend con separazione a layer:
 - In alternativa: modello eventual consistency con job di riconciliazione riepiloghi.
 
 ## Pattern asincroni
-- Coda job per export PDF (`redis` + worker dedicato).
+- Coda job per export PDF basata su collection Mongo `export_jobs` + worker dedicato.
 - Collezione `export_jobs` per stato, retry, error details.
 - Idempotenza su richieste export ripetute.
 

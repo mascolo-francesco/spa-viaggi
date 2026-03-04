@@ -51,7 +51,8 @@ class ExpensesRepository:
                 }
             },
         ]
-        docs = await self.collection.aggregate(pipeline).to_list(length=None)
+        cursor = await self.collection.aggregate(pipeline)
+        docs = await cursor.to_list(length=None)
         if not docs:
             return {
                 "trip_id": str(trip_id),

@@ -27,7 +27,7 @@ Modular monolith con moduli dominio indipendenti e contratti stabili interni.
 ### Auth
 - `POST /api/v1/auth/login`
   - Input: `username`, `password`
-  - Output: `user` + `auth_token` opzionale (modalita semplificata ammessa da specifica)
+  - Output: `access_token`, `token_type`, `user`
 
 ### Trips
 - `GET /api/v1/trips`
@@ -140,7 +140,7 @@ Usare `collMod` + `$jsonSchema` per campi obbligatori e tipi base, lasciando `ex
 
 ### 5.2 Pipeline export PDF
 1. API crea record `export_jobs` (`queued`).
-2. Enqueue su coda Redis `pdf_exports`.
+2. Job gestito in coda DB (`export_jobs`) tramite stato `queued`.
 3. Worker processa job, genera PDF, salva file, aggiorna stato.
 4. API espone polling stato e download.
 
@@ -166,3 +166,7 @@ Usare `collMod` + `$jsonSchema` per campi obbligatori e tipi base, lasciando `ex
 ### 6.3 Bootstrap
 - Startup task: ping DB, create indexes idempotente, check collezioni.
 - Fallback: se indice assente/errore critico -> readiness `false`.
+
+### 6.4 Deployment DB
+- Target attuale: MongoDB Atlas (cloud) con URI `mongodb+srv://`.
+- MongoDB locale mantenuto solo come fallback di sviluppo.

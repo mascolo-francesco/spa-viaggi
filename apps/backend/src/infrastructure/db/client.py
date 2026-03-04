@@ -1,3 +1,4 @@
+import inspect
 from typing import Any
 
 from pymongo import AsyncMongoClient
@@ -37,8 +38,10 @@ async def ping_database(settings: Settings) -> None:
     await client.admin.command("ping")
 
 
-def close_client() -> None:
+async def close_client() -> None:
     global _client
     if _client is not None:
-        _client.close()
+        result = _client.close()
+        if inspect.isawaitable(result):
+            await result
         _client = None

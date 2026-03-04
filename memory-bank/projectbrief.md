@@ -13,7 +13,7 @@ Realizzare una SPA per organizzazione viaggi di gruppo con backend robusto/scala
 - Export PDF informazioni viaggio.
 
 ## Vincoli
-- Database: MongoDB.
+- Database: MongoDB Atlas (cloud) come ambiente target.
 - Architettura backend progettata per crescita (modulare, testabile, osservabile).
 - Frontend fuori scope in questa sessione.
 

@@ -9,12 +9,13 @@
 - Implementazione backend completo in `apps/backend`:
   - FastAPI app + router v1 (`auth`, `trips`, `participants`, `activities`, `expenses`, `exports`, `health`)
   - Use case layer e repository MongoDB
-  - Config/security (JWT + password hashing)
+  - Config/security (JWT + password hashing `bcrypt`)
   - Validator `$jsonSchema` e indici (incl. `2dsphere`)
-  - Worker asincrono per export PDF con tracking stato job
+  - Worker asincrono per export PDF con tracking stato job (`export_jobs`)
   - Script seed/setup DB e dataset iniziale (`3 users`, `10 trips`)
-  - Infra locale (`docker-compose`, Dockerfiles, init mongo)
+  - Configurazione MongoDB Atlas (`mongodb+srv://`) operativa
   - Documentazione tecnica (`docs/architecture`, `docs/runbooks`)
+  - Test end-to-end API completato con esito positivo su tutti i flussi principali
 
 ## Da implementare
 - Implementazione frontend (a carico di Claude).
