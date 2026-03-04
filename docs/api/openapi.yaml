@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: SPA Viaggi API
+  version: 1.0.0
+  description: |
+    Contratto OpenAPI principale. In ambiente runtime la documentazione completa
+    e disponibile su `/docs` e `/openapi.json` generata automaticamente da FastAPI.
+servers:
+  - url: http://localhost:8000
+paths: {}

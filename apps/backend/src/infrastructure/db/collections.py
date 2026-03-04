@@ -1,0 +1,5 @@
+USERS = "users"
+TRIPS = "trips"
+TRIP_ACTIVITIES = "trip_activities"
+TRIP_EXPENSES = "trip_expenses"
+EXPORT_JOBS = "export_jobs"

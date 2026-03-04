@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Weekend a Berlino",
+    "destination": {"city": "Berlino", "country": "Germania", "address": "Alexanderplatz"},
+    "description": "Visita musei e centro storico",
+    "start_date": "2026-04-10",
+    "end_date": "2026-04-12",
+    "status": "planned",
+    "location": {"lat": 52.5200, "lon": 13.4050},
+    "participants_usernames": ["franco", "luca"],
+    "extra": {"transport": "flight", "budget_target": 450}
+  },
+  {
+    "title": "Gita al Lago di Garda",
+    "destination": {"city": "Lazise", "country": "Italia"},
+    "description": "Relax e passeggiate",
+    "start_date": "2026-05-02",
+    "end_date": "2026-05-03",
+    "status": "planned",
+    "location": {"lat": 45.5040, "lon": 10.7310},
+    "participants_usernames": ["franco", "marta"],
+    "extra": {"nights": 1}
+  },
+  {
+    "title": "Barcellona Cultura",
+    "destination": {"city": "Barcellona", "country": "Spagna"},
+    "description": "Sagrada Familia e tapas",
+    "start_date": "2025-09-18",
+    "end_date": "2025-09-22",
+    "status": "completed",
+    "location": {"lat": 41.3851, "lon": 2.1734},
+    "participants_usernames": ["franco", "luca", "marta"],
+    "extra": {"rating": 5}
+  },
+  {
+    "title": "Praga Christmas Market",
+    "destination": {"city": "Praga", "country": "Repubblica Ceca"},
+    "description": "Mercatini natalizi",
+    "start_date": "2026-12-12",
+    "end_date": "2026-12-15",
+    "status": "planned",
+    "location": {"lat": 50.0755, "lon": 14.4378},
+    "participants_usernames": ["luca", "marta"],
+    "extra": {"theme": "christmas"}
+  },
+  {
+    "title": "Amsterdam in bici",
+    "destination": {"city": "Amsterdam", "country": "Paesi Bassi"},
+    "description": "Tour canali",
+    "start_date": "2025-06-01",
+    "end_date": "2025-06-04",
+    "status": "completed",
+    "location": {"lat": 52.3676, "lon": 4.9041},
+    "participants_usernames": ["franco", "luca"],
+    "extra": {"bike_rental": true}
+  },
+  {
+    "title": "Vienna Classica",
+    "destination": {"city": "Vienna", "country": "Austria"},
+    "description": "Concerto e palazzi storici",
+    "start_date": "2026-03-20",
+    "end_date": "2026-03-23",
+    "status": "planned",
+    "location": {"lat": 48.2082, "lon": 16.3738},
+    "participants_usernames": ["marta"],
+    "extra": {"dress_code": "smart"}
+  },
+  {
+    "title": "Lisbon Food Trip",
+    "destination": {"city": "Lisbona", "country": "Portogallo"},
+    "description": "Street food e tram 28",
+    "start_date": "2026-06-14",
+    "end_date": "2026-06-18",
+    "status": "planned",
+    "location": {"lat": 38.7223, "lon": -9.1393},
+    "participants_usernames": ["franco", "marta"],
+    "extra": {"food_focus": true}
+  },
+  {
+    "title": "Escursione Dolomiti",
+    "destination": {"city": "Ortisei", "country": "Italia"},
+    "description": "Trekking di 2 giorni",
+    "start_date": "2025-08-09",
+    "end_date": "2025-08-10",
+    "status": "completed",
+    "location": {"lat": 46.5757, "lon": 11.6718},
+    "participants_usernames": ["luca"],
+    "extra": {"difficulty": "medium"}
+  },
+  {
+    "title": "Parigi Musei",
+    "destination": {"city": "Parigi", "country": "Francia"},
+    "description": "Louvre e Orsay",
+    "start_date": "2026-09-03",
+    "end_date": "2026-09-06",
+    "status": "planned",
+    "location": {"lat": 48.8566, "lon": 2.3522},
+    "participants_usernames": ["franco", "luca", "marta"],
+    "extra": {"museum_pass": true}
+  },
+  {
+    "title": "Bruxelles Beer Weekend",
+    "destination": {"city": "Bruxelles", "country": "Belgio"},
+    "description": "Degustazione birre artigianali",
+    "start_date": "2026-10-17",
+    "end_date": "2026-10-19",
+    "status": "planned",
+    "location": {"lat": 50.8503, "lon": 4.3517},
+    "participants_usernames": ["luca", "marta"],
+    "extra": {"age_restriction": true}
+  }
+]

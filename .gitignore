@@ -1,0 +1,63 @@
+# OS
+.DS_Store
+
+# Environment files (keep templates)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.hypothesis/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging/build artifacts
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+build/
+dist/
+
+# Node / frontend
+node_modules/
+.npm/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.parcel-cache/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+*.tsbuildinfo
+
+# Runtime exports (keep placeholder)
+data/exports/*
+!data/exports/.gitkeep
+
+# Logs
+*.log
+
+# Docker local overrides
+docker-compose.override.yml
+
+# Jupyter checkpoints
+.ipynb_checkpoints/

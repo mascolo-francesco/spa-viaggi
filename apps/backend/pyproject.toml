@@ -1,0 +1,44 @@
+[project]
+name = "spa-viaggi-backend"
+version = "0.1.0"
+description = "Backend FastAPI + MongoDB per SPA Viaggi"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116.0",
+  "uvicorn[standard]>=0.35.0",
+  "pydantic>=2.11.0",
+  "pydantic-settings>=2.10.0",
+  "pymongo>=4.11.0",
+  "passlib[bcrypt]>=1.7.4",
+  "python-jose[cryptography]>=3.4.0",
+  "python-multipart>=0.0.20",
+  "reportlab>=4.3.0",
+  "orjson>=3.11.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4.0",
+  "pytest-asyncio>=1.1.0",
+  "httpx>=0.28.0",
+  "ruff>=0.12.0"
+]
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
