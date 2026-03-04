@@ -16,6 +16,7 @@
   - Configurazione MongoDB Atlas (`mongodb+srv://`) operativa
   - Documentazione tecnica (`docs/architecture`, `docs/runbooks`)
   - Test end-to-end API completato con esito positivo su tutti i flussi principali
+  - Fix integrazione frontend login: CORS backend abilitato + payload login frontend in JSON
 
 ## Da implementare
 - Implementazione frontend (a carico di Claude).

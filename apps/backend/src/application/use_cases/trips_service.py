@@ -80,6 +80,11 @@ class TripsService:
         payload = data.copy()
         if "location" in payload:
             payload["location"] = self._build_location(payload.pop("location"))
+        if "participants" in payload:
+            payload["participants"] = [
+                to_object_id(participant_id, "participant_id")
+                for participant_id in payload["participants"] or []
+            ]
         if "start_date" in payload:
             payload["start_date"] = self._to_mongo_datetime(payload.get("start_date"))
         if "end_date" in payload:

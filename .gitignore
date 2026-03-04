@@ -50,8 +50,8 @@ coverage/
 *.tsbuildinfo
 
 # Runtime exports (keep placeholder)
-data/exports/*
-!data/exports/.gitkeep
+**/data/exports/*
+!**/data/exports/.gitkeep
 
 # Logs
 *.log
@@ -61,6 +61,9 @@ docker-compose.override.yml
 
 # Jupyter checkpoints
 .ipynb_checkpoints/
-apps/backend/data/exports/trip_69a7e9e06fa5b8a92f651aac_export_69a7e9e16fa5b8a92f651aaf.pdf
-apps/backend/data/exports/trip_69a7e97a6fa5b8a92f651aa7_export_69a7e97b6fa5b8a92f651aaa.pdf
-apps/backend/data/exports/trip_69a7e84478949ab8022db957_export_69a7e9b66fa5b8a92f651aab.pdf
+
+# AI assistant data
+.claude/
+.agents/
+.skills/
+skills-lock.json

@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 from src.core.bson import to_object_id
 from src.core.errors import NotFoundError
 from src.infrastructure.repositories.trips_repository import TripsRepository
@@ -25,6 +27,26 @@ class ParticipantsService:
                 )
         return items
 
+    async def _resolve_user_id(self, user_ref: str) -> ObjectId:
+        user = None
+        if ObjectId.is_valid(user_ref):
+            user = await self.users_repo.find_by_id(ObjectId(user_ref))
+        if user is None:
+            user = await self.users_repo.find_by_username(user_ref)
+        if user is None:
+            raise NotFoundError("Utente non trovato")
+        return user["_id"]
+
+    async def _resolve_user_ids(self, refs: list[str]) -> list[ObjectId]:
+        resolved: list[ObjectId] = []
+        seen: set[ObjectId] = set()
+        for user_ref in refs:
+            user_id = await self._resolve_user_id(user_ref)
+            if user_id not in seen:
+                seen.add(user_id)
+                resolved.append(user_id)
+        return resolved
+
     async def get_participants(self, trip_id: str) -> dict:
         trip = await self.trips_repo.get_by_id(to_object_id(trip_id, "trip_id"))
         if not trip:
@@ -39,7 +61,7 @@ class ParticipantsService:
         }
 
     async def replace_participants(self, trip_id: str, user_ids: list[str]) -> dict:
-        parsed = [to_object_id(user_id, "user_id") for user_id in user_ids]
+        parsed = await self._resolve_user_ids(user_ids)
         trip = await self.trips_repo.replace_participants(to_object_id(trip_id, "trip_id"), parsed)
         if not trip:
             raise NotFoundError("Viaggio non trovato")
@@ -51,8 +73,9 @@ class ParticipantsService:
         }
 
     async def add_participant(self, trip_id: str, user_id: str) -> dict:
+        resolved_user_id = await self._resolve_user_id(user_id)
         trip = await self.trips_repo.add_participant(
-            to_object_id(trip_id, "trip_id"), to_object_id(user_id, "user_id")
+            to_object_id(trip_id, "trip_id"), resolved_user_id
         )
         if not trip:
             raise NotFoundError("Viaggio non trovato")

@@ -38,6 +38,7 @@ class TripUpdate(BaseModel):
     end_date: date | None = None
     status: str | None = None
     location: LocationInput | None = None
+    participants: list[str] | None = None
     extra: dict[str, Any] | None = None
 
 
