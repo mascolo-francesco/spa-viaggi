@@ -15,7 +15,6 @@ import {
   Calendar,
   Users,
   Plane,
-  Loader2,
   ChevronLeft,
   ChevronRight,
   X,
@@ -23,6 +22,7 @@ import {
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { formatDate, statusConfig } from '@/lib/trip-utils'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const LIMIT = 12
 
@@ -91,51 +91,61 @@ export default function TripsPage() {
 
       {/* Filters */}
       <div className="bg-card border border-border rounded-xl p-4 mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
           {/* Search destination */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-            <Input
-              placeholder="Destinazione…"
-              value={filters.destination || ''}
-              onChange={(e) => handleFilterChange('destination', e.target.value)}
-              className="pl-9 h-9 bg-muted/40 border-border focus-visible:ring-1 text-sm"
-            />
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground px-0.5">Destinazione</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+              <Input
+                placeholder="Cerca destinazione…"
+                value={filters.destination || ''}
+                onChange={(e) => handleFilterChange('destination', e.target.value)}
+                className="pl-9 h-9 bg-muted/40 border-border focus-visible:ring-1 text-sm"
+              />
+            </div>
           </div>
 
           {/* Status */}
-          <Select
-            value={filters.status || 'all'}
-            onValueChange={(v) => handleFilterChange('status', v === 'all' ? undefined : v)}
-          >
-            <SelectTrigger className="h-9 bg-muted/40 border-border focus:ring-1 text-sm">
-              <SelectValue placeholder="Stato" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tutti gli stati</SelectItem>
-              <SelectItem value="planned">Pianificato</SelectItem>
-              <SelectItem value="completed">Completato</SelectItem>
-              <SelectItem value="cancelled">Cancellato</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground px-0.5">Stato</label>
+            <Select
+              value={filters.status || 'all'}
+              onValueChange={(v) => handleFilterChange('status', v === 'all' ? undefined : v)}
+            >
+              <SelectTrigger className="h-9 bg-muted/40 border-border focus:ring-1 text-sm">
+                <SelectValue placeholder="Tutti gli stati" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tutti gli stati</SelectItem>
+                <SelectItem value="planned">Pianificato</SelectItem>
+                <SelectItem value="completed">Completato</SelectItem>
+                <SelectItem value="cancelled">Cancellato</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* From date */}
-          <Input
-            type="date"
-            placeholder="Da data"
-            value={filters.from_date || ''}
-            onChange={(e) => handleFilterChange('from_date', e.target.value)}
-            className="h-9 bg-muted/40 border-border focus-visible:ring-1 text-sm"
-          />
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground px-0.5">Dal</label>
+            <Input
+              type="date"
+              value={filters.from_date || ''}
+              onChange={(e) => handleFilterChange('from_date', e.target.value)}
+              className="h-9 bg-muted/40 border-border focus-visible:ring-1 text-sm"
+            />
+          </div>
 
           {/* To date */}
-          <Input
-            type="date"
-            placeholder="A data"
-            value={filters.to_date || ''}
-            onChange={(e) => handleFilterChange('to_date', e.target.value)}
-            className="h-9 bg-muted/40 border-border focus-visible:ring-1 text-sm"
-          />
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground px-0.5">Al</label>
+            <Input
+              type="date"
+              value={filters.to_date || ''}
+              onChange={(e) => handleFilterChange('to_date', e.target.value)}
+              className="h-9 bg-muted/40 border-border focus-visible:ring-1 text-sm"
+            />
+          </div>
         </div>
 
         {hasActiveFilters && (
@@ -155,8 +165,21 @@ export default function TripsPage() {
 
       {/* Content */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <Skeleton className="h-5 w-24 rounded-full" />
+                <Skeleton className="h-4 w-14" />
+              </div>
+              <Skeleton className="h-5 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-1/2 mb-5" />
+              <div className="flex items-center justify-between pt-3 border-t border-border/60">
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : trips.length === 0 ? (
         <EmptyState hasFilters={hasActiveFilters} />
@@ -206,6 +229,7 @@ export default function TripsPage() {
 
 function TripCard({ trip }: { trip: TripListItem }) {
   const cfg = statusConfig[trip.status]
+  const StatusIcon = cfg.icon
   const destinationStr = [trip.destination?.city, trip.destination?.country]
     .filter(Boolean).join(', ') || 'Destinazione non specificata'
 
@@ -216,9 +240,9 @@ function TripCard({ trip }: { trip: TripListItem }) {
         <div className="flex items-center justify-between mb-3">
           <Badge
             variant="secondary"
-            className={cn('text-xs font-medium px-2 py-0.5 rounded-full border', cfg.className)}
+            className={cn('text-xs font-medium px-2 py-0.5 rounded-full border gap-1', cfg.className)}
           >
-            <span className="mr-1.5">{cfg.dot}</span>
+            <StatusIcon className="w-3 h-3" strokeWidth={2} />
             {cfg.label}
           </Badge>
           <span className="text-xs text-muted-foreground">

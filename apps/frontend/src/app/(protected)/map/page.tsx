@@ -209,19 +209,27 @@ export default function MapPage() {
             </SelectContent>
           </Select>
 
-          <Input
-            type="date"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-            className="h-8 bg-muted/40 border-border focus-visible:ring-1 text-xs w-36"
-          />
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-muted-foreground shrink-0">Dal</span>
+            <Input
+              type="date"
+              aria-label="Dal"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="h-8 bg-muted/40 border-border focus-visible:ring-1 text-xs w-32"
+            />
+          </div>
 
-          <Input
-            type="date"
-            value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
-            className="h-8 bg-muted/40 border-border focus-visible:ring-1 text-xs w-36"
-          />
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-muted-foreground shrink-0">Al</span>
+            <Input
+              type="date"
+              aria-label="Al"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="h-8 bg-muted/40 border-border focus-visible:ring-1 text-xs w-32"
+            />
+          </div>
 
           {hasFilters && (
             <Button
@@ -275,8 +283,8 @@ export default function MapPage() {
       {markers.length > 0 && (
         <div className="absolute bottom-4 left-4 z-10 pointer-events-none" style={{ position: 'absolute', bottom: '16px', left: '16px' }}>
           <div className="bg-card/90 backdrop-blur-sm border border-border rounded-xl px-3 py-2 flex items-center gap-3">
-            <LegendItem color="text-red-500" label="Fatto (completato)" />
-            <LegendItem color="text-green-500" label="Da fare" />
+            <LegendItem color="text-green-500" label="Pianificato" />
+            <LegendItem color="text-red-500" label="Completato / Cancellato" />
           </div>
         </div>
       )}

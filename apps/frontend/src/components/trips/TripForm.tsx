@@ -206,9 +206,9 @@ export default function TripForm({ mode, trip }: TripFormProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="planned">◆ Pianificato</SelectItem>
-                  <SelectItem value="completed">● Completato</SelectItem>
-                  <SelectItem value="cancelled">✕ Cancellato</SelectItem>
+                  <SelectItem value="planned">Pianificato</SelectItem>
+                  <SelectItem value="completed">Completato</SelectItem>
+                  <SelectItem value="cancelled">Cancellato</SelectItem>
                 </SelectContent>
               </Select>
             </FieldWrapper>

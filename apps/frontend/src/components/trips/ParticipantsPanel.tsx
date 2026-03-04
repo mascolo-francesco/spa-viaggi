@@ -6,6 +6,7 @@ import { Participant } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Trash2,
   Users,
@@ -120,8 +121,16 @@ export function ParticipantsPanel({ tripId }: ParticipantsPanelProps) {
         </div>
 
         {isLoading ? (
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-5 h-5 animate-spin text-primary" />
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3 py-2 px-3">
+                <Skeleton className="w-8 h-8 rounded-full shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : participants.length === 0 ? (
           <div className="flex flex-col items-center py-8 text-center">
@@ -159,7 +168,7 @@ export function ParticipantsPanel({ tripId }: ParticipantsPanelProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                    className="h-7 w-7 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
                     onClick={() => handleRemove(p.user_id)}
                     disabled={removingId === p.user_id}
                   >

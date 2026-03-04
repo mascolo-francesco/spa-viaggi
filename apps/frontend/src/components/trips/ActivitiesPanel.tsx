@@ -7,6 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   Dialog,
   DialogContent,
@@ -127,7 +135,7 @@ export function ActivitiesPanel({ tripId }: ActivitiesPanelProps) {
         <div>
           <h3 className="font-medium text-foreground">Attività</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            {activities.length} attività{activities.length !== 1 ? '' : 'à'}
+            {activities.length} attività
           </p>
         </div>
         <Button
@@ -142,8 +150,24 @@ export function ActivitiesPanel({ tripId }: ActivitiesPanelProps) {
 
       {/* List */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-5 h-5 animate-spin text-primary" />
+        <div className="space-y-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-4 w-16 rounded-full" />
+                  </div>
+                  <Skeleton className="h-3 w-56" />
+                </div>
+                <div className="flex gap-1">
+                  <Skeleton className="h-7 w-7 rounded-md" />
+                  <Skeleton className="h-7 w-7 rounded-md" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : activities.length === 0 ? (
         <div className="bg-card border border-border rounded-xl flex flex-col items-center py-12 text-center">
@@ -200,7 +224,7 @@ export function ActivitiesPanel({ tripId }: ActivitiesPanelProps) {
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -251,12 +275,23 @@ export function ActivitiesPanel({ tripId }: ActivitiesPanelProps) {
 
             <div className="space-y-1.5">
               <Label className="text-sm">Tipo</Label>
-              <Input
-                placeholder="Es. viaggio, alloggio, cibo, visita…"
+              <Select
                 value={formData.type || ''}
-                onChange={(e) => setFormData((d) => ({ ...d, type: e.target.value || null }))}
-                className="bg-muted/40 border-border focus-visible:ring-1"
-              />
+                onValueChange={(v) => setFormData((d) => ({ ...d, type: v || null }))}
+              >
+                <SelectTrigger className="bg-muted/40 border-border focus:ring-1">
+                  <SelectValue placeholder="Seleziona un tipo…" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="visita">Visita</SelectItem>
+                  <SelectItem value="evento">Evento</SelectItem>
+                  <SelectItem value="spostamento">Spostamento</SelectItem>
+                  <SelectItem value="alloggio">Alloggio</SelectItem>
+                  <SelectItem value="cibo">Cibo & Ristorante</SelectItem>
+                  <SelectItem value="tempo libero">Tempo libero</SelectItem>
+                  <SelectItem value="altro">Altro</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid grid-cols-2 gap-3">

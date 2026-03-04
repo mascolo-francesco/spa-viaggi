@@ -8,6 +8,14 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   Dialog,
   DialogContent,
@@ -43,12 +51,23 @@ const emptyForm: ExpenseCreateRequest = {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  food: 'bg-orange-400/15 text-orange-300 border-orange-400/25',
-  transport: 'bg-blue-400/15 text-blue-300 border-blue-400/25',
-  accommodation: 'bg-violet-400/15 text-violet-300 border-violet-400/25',
-  entertainment: 'bg-pink-400/15 text-pink-300 border-pink-400/25',
-  shopping: 'bg-yellow-400/15 text-yellow-300 border-yellow-400/25',
-  health: 'bg-green-400/15 text-green-300 border-green-400/25',
+  food: 'bg-orange-400/15 text-orange-500 border-orange-400/25',
+  transport: 'bg-blue-400/15 text-blue-500 border-blue-400/25',
+  accommodation: 'bg-violet-400/15 text-violet-500 border-violet-400/25',
+  entertainment: 'bg-pink-400/15 text-pink-500 border-pink-400/25',
+  shopping: 'bg-yellow-400/15 text-yellow-600 border-yellow-400/25',
+  health: 'bg-green-400/15 text-green-600 border-green-400/25',
+  altro: 'bg-secondary text-muted-foreground border-border',
+}
+
+const CATEGORY_LABELS: Record<string, string> = {
+  food: 'Cibo',
+  transport: 'Trasporto',
+  accommodation: 'Alloggio',
+  entertainment: 'Intrattenimento',
+  shopping: 'Shopping',
+  health: 'Salute',
+  altro: 'Altro',
 }
 
 function getCategoryColor(category: string): string {
@@ -109,8 +128,8 @@ export function ExpensesPanel({ tripId }: ExpensesPanelProps) {
   }
 
   async function handleSave() {
-    if (!formData.category.trim() || formData.category.trim().length < 2) {
-      toast.error('La categoria deve avere almeno 2 caratteri')
+    if (!formData.category) {
+      toast.error('Seleziona una categoria')
       return
     }
     if (!formData.amount || formData.amount <= 0) {
@@ -233,8 +252,25 @@ export function ExpensesPanel({ tripId }: ExpensesPanelProps) {
 
       {/* Expenses list */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-5 h-5 animate-spin text-primary" />
+        <div className="space-y-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="bg-card border border-border rounded-xl p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-5 w-20 rounded-full" />
+                    <Skeleton className="h-4 w-28" />
+                  </div>
+                  <Skeleton className="h-6 w-24" />
+                  <Skeleton className="h-3 w-40" />
+                </div>
+                <div className="flex gap-1">
+                  <Skeleton className="h-7 w-7 rounded-md" />
+                  <Skeleton className="h-7 w-7 rounded-md" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : expenses.length === 0 ? (
         <div className="bg-card border border-border rounded-xl flex flex-col items-center py-12 text-center">
@@ -258,11 +294,11 @@ export function ExpensesPanel({ tripId }: ExpensesPanelProps) {
                     <Badge
                       variant="secondary"
                       className={cn(
-                        'text-xs font-medium px-2 py-0.5 rounded-full border capitalize',
+                        'text-xs font-medium px-2 py-0.5 rounded-full border',
                         getCategoryColor(expense.category)
                       )}
                     >
-                      {expense.category}
+                      {CATEGORY_LABELS[expense.category.toLowerCase()] || expense.category}
                     </Badge>
                     {expense.occurred_at && (
                       <span className="text-xs text-muted-foreground">
@@ -295,7 +331,7 @@ export function ExpensesPanel({ tripId }: ExpensesPanelProps) {
                   )}
                 </div>
 
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -337,12 +373,23 @@ export function ExpensesPanel({ tripId }: ExpensesPanelProps) {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label className="text-sm">Categoria *</Label>
-                <Input
-                  placeholder="Es. food, transport…"
+                <Select
                   value={formData.category}
-                  onChange={(e) => setFormData((d) => ({ ...d, category: e.target.value }))}
-                  className="bg-muted/40 border-border focus-visible:ring-1"
-                />
+                  onValueChange={(v) => setFormData((d) => ({ ...d, category: v }))}
+                >
+                  <SelectTrigger className="bg-muted/40 border-border focus:ring-1">
+                    <SelectValue placeholder="Seleziona…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="food">Cibo</SelectItem>
+                    <SelectItem value="transport">Trasporto</SelectItem>
+                    <SelectItem value="accommodation">Alloggio</SelectItem>
+                    <SelectItem value="entertainment">Intrattenimento</SelectItem>
+                    <SelectItem value="shopping">Shopping</SelectItem>
+                    <SelectItem value="health">Salute</SelectItem>
+                    <SelectItem value="altro">Altro</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-sm">Valuta</Label>

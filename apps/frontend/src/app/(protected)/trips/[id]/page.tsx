@@ -7,7 +7,13 @@ import { api } from '@/lib/api'
 import { TripDetail } from '@/types'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 import {
   ArrowLeft,
   Edit,
@@ -21,6 +27,7 @@ import {
   Download,
   Loader2,
   AlertTriangle,
+  ExternalLink,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
@@ -41,14 +48,13 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
-type Tab = 'info' | 'participants' | 'activities' | 'expenses' | 'export'
+type Tab = 'info' | 'participants' | 'activities' | 'expenses'
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: 'info', label: 'Info', icon: FileText },
   { id: 'participants', label: 'Partecipanti', icon: Users },
   { id: 'activities', label: 'Attività', icon: Activity },
   { id: 'expenses', label: 'Spese', icon: DollarSign },
-  { id: 'export', label: 'Export PDF', icon: Download },
 ]
 
 export default function TripDetailPage() {
@@ -99,6 +105,7 @@ export default function TripDetailPage() {
   if (!trip) return null
 
   const cfg = statusConfig[trip.status]
+  const StatusIcon = cfg.icon
   const destinationStr = [trip.destination?.city, trip.destination?.country]
     .filter(Boolean).join(', ') || null
 
@@ -119,9 +126,9 @@ export default function TripDetailPage() {
           <div className="flex items-center gap-3 mb-2">
             <Badge
               variant="secondary"
-              className={cn('text-xs font-medium px-2 py-0.5 rounded-full border', cfg.className)}
+              className={cn('text-xs font-medium px-2 py-0.5 rounded-full border gap-1', cfg.className)}
             >
-              <span className="mr-1.5">{cfg.dot}</span>
+              <StatusIcon className="w-3 h-3" strokeWidth={2} />
               {cfg.label}
             </Badge>
           </div>
@@ -137,6 +144,25 @@ export default function TripDetailPage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          {/* Export PDF — Sheet */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2 h-8">
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Esporta PDF</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="sm:max-w-md overflow-y-auto">
+              <SheetHeader className="mb-6">
+                <SheetTitle className="flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" />
+                  Esporta PDF
+                </SheetTitle>
+              </SheetHeader>
+              <ExportPDFButton tripId={id} tripTitle={trip.title} />
+            </SheetContent>
+          </Sheet>
+
           <Link href={`/trips/${id}/edit`}>
             <Button variant="outline" size="sm" className="gap-2 h-8">
               <Edit className="w-3.5 h-3.5" />
@@ -157,7 +183,7 @@ export default function TripDetailPage() {
                 ) : (
                   <Trash2 className="w-3.5 h-3.5" />
                 )}
-                Elimina
+                <span className="hidden sm:inline">Elimina</span>
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -185,8 +211,6 @@ export default function TripDetailPage() {
         </div>
       </div>
 
-      <Separator className="mb-0" />
-
       {/* Tabs */}
       <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
         {tabs.map(({ id: tabId, label, icon: Icon }) => (
@@ -212,7 +236,6 @@ export default function TripDetailPage() {
         {activeTab === 'participants' && <ParticipantsPanel tripId={id} />}
         {activeTab === 'activities' && <ActivitiesPanel tripId={id} />}
         {activeTab === 'expenses' && <ExpensesPanel tripId={id} />}
-        {activeTab === 'export' && <ExportPDFButton tripId={id} tripTitle={trip.title} />}
       </div>
     </div>
   )
@@ -269,17 +292,17 @@ function InfoTab({ trip }: { trip: TripDetail }) {
       {/* Right column */}
       <div className="space-y-4">
         {trip.location && (
-          <InfoBlock label="Coordinate GPS">
-            <div className="text-sm space-y-1">
-              <div className="flex gap-2">
-                <span className="text-muted-foreground w-16 shrink-0">Lat</span>
-                <span className="font-mono">{trip.location.lat.toFixed(5)}</span>
-              </div>
-              <div className="flex gap-2">
-                <span className="text-muted-foreground w-16 shrink-0">Lon</span>
-                <span className="font-mono">{trip.location.lon.toFixed(5)}</span>
-              </div>
-            </div>
+          <InfoBlock label="Posizione">
+            <a
+              href={`https://www.openstreetmap.org/?mlat=${trip.location.lat}&mlon=${trip.location.lon}&zoom=12`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
+            >
+              <MapPin className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+              Apri su mappa
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </InfoBlock>
         )}
 
@@ -291,7 +314,7 @@ function InfoTab({ trip }: { trip: TripDetail }) {
           </p>
         </InfoBlock>
 
-        <InfoBlock label="Metadati">
+        <InfoBlock label="Informazioni">
           <div className="space-y-1 text-xs text-muted-foreground">
             <div className="flex gap-2">
               <span className="w-24 shrink-0">Creato il</span>
@@ -303,10 +326,6 @@ function InfoTab({ trip }: { trip: TripDetail }) {
                 <span>{new Date(trip.updated_at).toLocaleString('it-IT')}</span>
               </div>
             )}
-            <div className="flex gap-2">
-              <span className="w-24 shrink-0">ID</span>
-              <span className="font-mono text-xs">{trip.id}</span>
-            </div>
           </div>
         </InfoBlock>
       </div>

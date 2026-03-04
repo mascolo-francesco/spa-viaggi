@@ -1,23 +1,24 @@
+import { Clock, CheckCircle, XCircle, type LucideIcon } from 'lucide-react'
 import { TripStatus } from '@/types'
 
 export const statusConfig: Record<
   TripStatus,
-  { label: string; dot: string; className: string }
+  { label: string; icon: LucideIcon; className: string }
 > = {
   planned: {
     label: 'Pianificato',
-    dot: '◆',
-    className: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+    icon: Clock,
+    className: 'text-amber-500 bg-amber-500/10 border-amber-500/20',
   },
   completed: {
     label: 'Completato',
-    dot: '●',
-    className: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+    icon: CheckCircle,
+    className: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20',
   },
   cancelled: {
     label: 'Cancellato',
-    dot: '✕',
-    className: 'text-rose-400 bg-rose-400/10 border-rose-400/20',
+    icon: XCircle,
+    className: 'text-rose-500 bg-rose-500/10 border-rose-500/20',
   },
 }
 

@@ -22,7 +22,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { toast } from 'sonner'
@@ -113,7 +112,6 @@ function AppSidebarFooter() {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" side="top" className="w-48">
-          <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={handleLogout}
             className="text-destructive focus:text-destructive gap-2 cursor-pointer"
